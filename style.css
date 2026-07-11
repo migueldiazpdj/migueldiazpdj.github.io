@@ -1,0 +1,80 @@
+:root {
+  --terminal-bg: #06080B;
+  --terminal-text: #D9DDE2;
+  --terminal-accent: #6FD3A8;
+  --terminal-accent-hover: #8FE8C0;
+  --terminal-info: #4DD0FF;
+  --terminal-highlight: #FF5D8F;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+}
+
+#term {
+  height: 100vh;
+  width: 100%;
+  padding: 20px 24px;
+  box-sizing: border-box;
+  background: var(--terminal-bg);
+}
+
+.terminal {
+  --color: var(--terminal-text);
+  --background: transparent;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--terminal-text);
+}
+
+.terminal .terminal-output > div {
+  margin: 0.1em 0;
+}
+
+.terminal .terminal-output > div > div {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal .cmd,
+.terminal .cmd .cmd-prompt,
+.terminal .cmd span {
+  color: var(--terminal-text);
+}
+
+.terminal .cmd .cmd-prompt {
+  color: var(--terminal-accent);
+}
+
+.terminal a,
+.terminal .terminal-output a {
+  color: var(--terminal-accent);
+  text-decoration: none;
+}
+
+.terminal a:hover {
+  color: var(--terminal-accent-hover);
+  text-decoration: underline;
+}
+
+.terminal .timeline-connector {
+  border-left: 1px solid var(--terminal-info);
+  padding-left: 10px;
+  margin-left: 4px;
+}
+
+.terminal .timeline-accent {
+  border-left: 1px solid var(--terminal-highlight);
+  padding-left: 10px;
+  margin-left: 4px;
+}
+
+::selection {
+  background: rgba(111, 211, 168, 0.24);
+  color: #F2F4F6;
+}
