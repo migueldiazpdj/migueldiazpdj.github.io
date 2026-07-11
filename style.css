@@ -27,7 +27,7 @@ body {
   --color: var(--terminal-text);
   --background: transparent;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-  line-height: 1.45;
+  --size: 1.2;
   letter-spacing: 0.01em;
   color: var(--terminal-text);
 }

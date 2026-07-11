@@ -50,28 +50,11 @@ $(function () {
       printBlock(term, CONTENT.current);
     },
 
-    work: function (term) {
-      printBlock(term, CONTENT.work);
-    },
-
-    experience: function (term) {
-      printBlock(term, CONTENT.experience);
-    },
-
-    education: function (term) {
-      printBlock(term, CONTENT.education);
-    },
-
-    skills: function (term) {
-      printBlock(term, CONTENT.skills);
-    },
-
     projects: function (term) {
       printBlock(term, CONTENT.projects);
 
-      term.echo("");
-      term.echo(" Loading your public GitHub repositories...");
-
+      const EXCLUDED_REPOS = ["migueldiazpdj.github.io", "migueldiazpdj"];
+ 
       fetch("https://api.github.com/users/migueldiazpdj/repos?per_page=100&type=owner")
         .then(function (response) {
           if (!response.ok) {
@@ -82,33 +65,36 @@ $(function () {
         .then(function (repos) {
           const visibleRepos = repos
             .filter(function (repo) {
-              return !repo.fork;
+              return !repo.fork && EXCLUDED_REPOS.indexOf(repo.name) === -1;
             })
             .sort(function (a, b) {
               return new Date(b.pushed_at) - new Date(a.pushed_at);
             })
             .slice(0, 8);
-
+ 
           if (!visibleRepos.length) {
             term.echo(" No public repositories found.");
             return;
           }
-
-          term.echo("");
-          term.echo(" Your GitHub projects:");
-          term.echo("");
-
+ 
           visibleRepos.forEach(function (repo) {
             const updated = repo.pushed_at ? new Date(repo.pushed_at).toLocaleDateString("en", { year: "numeric", month: "short", day: "numeric" }) : "unknown";
-            const stars = repo.stargazers_count > 0 ? " ★ " + repo.stargazers_count : "";
-            const language = repo.language ? " | " + repo.language : "";
-
-            term.echo(" -> " + repo.name + stars);
-            if (repo.description) {
-              term.echo("    " + repo.description);
+ 
+            const metaParts = [];
+            if (repo.language) {
+              metaParts.push(repo.language);
             }
-            term.echo("    updated " + updated + language);
-            echoLink(term, repo.html_url, repo.html_url);
+            if (repo.stargazers_count > 0) {
+              metaParts.push("★ " + repo.stargazers_count);
+            }
+            metaParts.push("updated " + updated);
+ 
+            term.echo($("<span>", { class: "project-name", text: "◆ " + repo.name }));
+            if (repo.description) {
+              term.echo($("<span>", { class: "project-desc", text: "  " + repo.description }));
+            }
+            term.echo($("<span>", { class: "project-meta", text: "  " + metaParts.join("  ·  ") }));
+            echoLink(term, "  " + repo.html_url, repo.html_url);
             term.echo("");
           });
         })
@@ -170,8 +156,5 @@ $(function () {
       }
     }
   );
-
-  term.echo("", { finalize: true });
-  term.echo("[status] interactive terminal ready", { finalize: true });
 
 });
