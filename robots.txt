@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://migueldiazpdj.github.io/sitemap.xml

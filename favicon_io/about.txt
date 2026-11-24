@@ -1,6 +1,0 @@
-This favicon was generated using the following font:
-
-- Font Title: Stint Ultra Expanded
-- Font Author: undefined
-- Font Source: https://fonts.gstatic.com/s/stintultraexpanded/v23/CSRg4yNNh-GbW3o3JkwoDcdvMKMf0oBAd0qoATQkWwam.ttf
-- Font License: undefined)

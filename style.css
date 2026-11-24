@@ -1,80 +1,1202 @@
-:root {
-  --terminal-bg: #06080B;
-  --terminal-text: #D9DDE2;
-  --terminal-accent: #6FD3A8;
-  --terminal-accent-hover: #8FE8C0;
-  --terminal-info: #4DD0FF;
-  --terminal-highlight: #FF5D8F;
+/* ====================================================================
+   Miguel Díaz — Personal Portfolio (antwi.dev design system)
+   Features:
+   - Full intro preloader animation (handwritten signature, progressive streaming)
+   - Strict scroll lock during intro so page NEVER opens/reloads at footer
+   - Ambient botanical scene (sun glow, rays, swaying botanical leaves & data nodes)
+   - Footer botanical leaf & reed bed
+   - Light / Dark theme system with Radix color palette
+   - Floating intro controls pill
+   ==================================================================== */
+
+/* ----- CSS Custom Properties (Theme: Bespoke Autumnal Minimalist) ----- */
+:root,
+.light {
+  /* Warm editorial linen/paper palette */
+  --page-bg: #f8f5ef;
+  --card-bg: #ffffff;
+  --card-border: rgba(165, 135, 100, 0.12);
+  --card-hover-border: rgba(165, 135, 100, 0.28);
+  --link-color: #24201a;
+  --link-underline: rgba(184, 104, 46, 0.38);
+
+  --gray-1: #ffffff;
+  --gray-2: #f8f5ef;
+  --gray-3: #f0ebe1;
+  --gray-4: #e6dfd2;
+  --gray-5: #dcd4c5;
+  --gray-6: #cfc5b3;
+  --gray-7: #beaea0;
+  --gray-8: #a19280;
+  --gray-9: #807261;
+  --gray-10: #6e6150;
+  --gray-11: #574c3e;
+  --gray-12: #24201a;
+
+  --gray-a3: rgba(90, 65, 40, 0.05);
+  --gray-a4: rgba(90, 65, 40, 0.08);
+  --gray-a5: rgba(90, 65, 40, 0.12);
+  --gray-a6: rgba(90, 65, 40, 0.18);
+
+  /* Autumn accents */
+  --autumn-amber: #b86a24;
+  --autumn-terracotta: #ad5036;
+  --autumn-sage: #446e50;
+
+  /* Atmospheric autumn light aura */
+  --aura-primary: rgba(228, 152, 72, 0.20);
+  --aura-secondary: rgba(188, 98, 56, 0.13);
+  --aura-tertiary: rgba(78, 122, 85, 0.11);
+  --glare-opacity: 0.95;
 }
 
-html,
-body {
-  margin: 0;
-  height: 100%;
-  background: var(--terminal-bg);
-  color: var(--terminal-text);
+.dark {
+  /* Rich smoked obsidian & dark autumn wood */
+  --page-bg: #141210;
+  --card-bg: #1b1815;
+  --card-border: rgba(220, 180, 140, 0.09);
+  --card-hover-border: rgba(220, 180, 140, 0.22);
+  --link-color: #ede6dc;
+  --link-underline: rgba(220, 160, 96, 0.45);
+
+  --gray-1: #0f0e0c;
+  --gray-2: #141210;
+  --gray-3: #1b1815;
+  --gray-4: #24201c;
+  --gray-5: #2e2924;
+  --gray-6: #39332c;
+  --gray-7: #474037;
+  --gray-8: #5e554a;
+  --gray-9: #7d7265;
+  --gray-10: #9c9082;
+  --gray-11: #b8ad9e;
+  --gray-12: #ede6dc;
+
+  --gray-a3: rgba(240, 220, 190, 0.05);
+  --gray-a4: rgba(240, 220, 190, 0.08);
+  --gray-a5: rgba(240, 220, 190, 0.12);
+  --gray-a6: rgba(240, 220, 190, 0.18);
+
+  /* Autumn accents (dark) */
+  --autumn-amber: #e0994d;
+  --autumn-terracotta: #d97357;
+  --autumn-sage: #72a180;
+
+  /* Atmospheric autumn light aura (dark) */
+  --aura-primary: rgba(220, 145, 65, 0.15);
+  --aura-secondary: rgba(180, 85, 50, 0.10);
+  --aura-tertiary: rgba(75, 115, 80, 0.09);
+  --glare-opacity: 0.65;
 }
 
-#term {
-  height: 100vh;
-  width: 100%;
-  padding: 20px 24px;
+/* ----- Reset & Base ----- */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  background: var(--terminal-bg);
+  margin: 0;
+  padding: 0;
 }
 
-.terminal {
-  --color: var(--terminal-text);
-  --background: transparent;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-  --size: 1.2;
-  letter-spacing: 0.01em;
-  color: var(--terminal-text);
-}
-
-.terminal .terminal-output > div {
-  margin: 0.1em 0;
-}
-
-.terminal .terminal-output > div > div {
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.terminal .cmd,
-.terminal .cmd .cmd-prompt,
-.terminal .cmd span {
-  color: var(--terminal-text);
-}
-
-.terminal .cmd .cmd-prompt {
-  color: var(--terminal-accent);
-}
-
-.terminal a,
-.terminal .terminal-output a {
-  color: var(--terminal-accent);
+* {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   text-decoration: none;
+  color: inherit;
+  border: 0;
 }
 
-.terminal a:hover {
-  color: var(--terminal-accent-hover);
-  text-decoration: underline;
+/* Scroll lock when preloader is running to guarantee 0 scroll down */
+html {
+  scrollbar-width: none;
+  background-color: var(--page-bg);
+  overflow-x: hidden;
 }
 
-.terminal .timeline-connector {
-  border-left: 1px solid var(--terminal-info);
-  padding-left: 10px;
-  margin-left: 4px;
+html[data-preloader="running"] {
+  overflow: hidden !important;
+  height: 100vh !important;
 }
 
-.terminal .timeline-accent {
-  border-left: 1px solid var(--terminal-highlight);
-  padding-left: 10px;
-  margin-left: 4px;
+html[data-preloader="running"] body {
+  overflow: hidden !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+}
+
+html[data-preloader="done"] {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 128px;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 ::selection {
-  background: rgba(111, 211, 168, 0.24);
-  color: #F2F4F6;
+  color: var(--gray-1);
+  background: var(--gray-12);
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 450;
+  color: var(--gray-12);
+  line-height: 24px;
+  letter-spacing: -0.087px;
+  background: var(--page-bg);
+  overflow-x: clip;
+  min-height: 100vh;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ====================================================================
+   Ambient Bloom Scene (Sun, Rays, Swaying Botanical Leaves & Data Nodes)
+   ==================================================================== */
+.bloom-scene {
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: clip;
+  z-index: 0;
+}
+
+.bloom-back,
+.bloom-front {
+  position: absolute;
+  inset: 0;
+}
+
+.bloom-back {
+  z-index: 1;
+}
+
+.bloom-front {
+  z-index: 3;
+}
+
+/* Atmospheric Autumn Light (Reemplazo de los rayos del sol: Luz cálida ambiental difusa) */
+.autumn-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: var(--glare-opacity);
+  transition: opacity 1.4s ease-out;
+}
+
+.autumn-aura-primary {
+  position: absolute;
+  top: -25vh;
+  right: -20vw;
+  width: 90vw;
+  height: 90vh;
+  max-width: 900px;
+  max-height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--aura-primary) 0%,
+    var(--aura-secondary) 42%,
+    transparent 74%
+  );
+  filter: blur(50px);
+  animation: autumn-glow-pulse 14s ease-in-out infinite alternate;
+  display: block;
+}
+
+@keyframes autumn-glow-pulse {
+  0% {
+    transform: scale(0.94) translate(0, 0);
+    opacity: 0.82;
+  }
+  100% {
+    transform: scale(1.06) translate(-15px, 15px);
+    opacity: 1;
+  }
+}
+
+.autumn-aura-secondary {
+  position: absolute;
+  top: 35vh;
+  left: -20vw;
+  width: 75vw;
+  height: 65vh;
+  max-width: 750px;
+  max-height: 650px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--aura-tertiary) 0%,
+    transparent 68%
+  );
+  filter: blur(60px);
+  animation: autumn-glow-secondary 18s ease-in-out infinite alternate;
+  display: block;
+}
+
+@keyframes autumn-glow-secondary {
+  0% {
+    transform: scale(0.92) translate(0, 0);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.08) translate(18px, -12px);
+    opacity: 0.95;
+  }
+}
+
+.autumn-dapple {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 82% 16%, var(--aura-primary) 0, transparent 40%),
+    radial-gradient(circle at 18% 65%, var(--aura-tertiary) 0, transparent 38%),
+    radial-gradient(circle at 88% 78%, var(--aura-secondary) 0, transparent 35%);
+  filter: blur(40px);
+  opacity: 0.6;
+  display: block;
+}
+
+.autumn-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.03) 100%
+  );
+  pointer-events: none;
+  display: block;
+}
+
+.dark .autumn-vignette {
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+}
+
+/* Floating botanical leaves (Hojas botánicas) */
+.bloom {
+  width: var(--size, 120px);
+  aspect-ratio: 1;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  perspective: 600px;
+  will-change: transform;
+  opacity: 0.90;
+  transition: opacity 1s ease-out;
+}
+
+.bloom-flight {
+  width: 100%;
+  height: 100%;
+  animation: bloom-arrive 1.4s cubic-bezier(0.16, 1, 0.3, 1) var(--enter-delay, 0.2s) both;
+}
+
+@keyframes bloom-arrive {
+  0% {
+    opacity: 0;
+    transform: scale(0.55) rotate(-22deg);
+  }
+  100% {
+    opacity: 0.92;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* The gentle wind sway of the leaves */
+.bloom-sway {
+  width: 100%;
+  height: 100%;
+  animation: bloom-sway var(--sway-duration, 12s) ease-in-out var(--sway-delay, 0s) infinite alternate;
+  transform-origin: 50% 85%;
+}
+
+@keyframes bloom-sway {
+  0% {
+    transform: rotate(-3.5deg) translateY(0);
+  }
+  100% {
+    transform: rotate(3.5deg) translateY(-6px);
+  }
+}
+
+.bloom-leaf {
+  width: 100%;
+  height: 100%;
+  filter: blur(var(--blur, 0px));
+  transform: rotate(var(--rotate, 0deg)) scaleY(var(--tilt, 1));
+}
+
+.bloom-leaf svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Ambient Floating Autumn Motes & Data Points */
+.data-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.65;
+  background: radial-gradient(circle, rgba(228, 154, 75, 0.85) 0%, rgba(184, 95, 55, 0.35) 60%, transparent 100%);
+  box-shadow: 0 0 10px rgba(228, 154, 75, 0.4);
+  animation: particle-breathe var(--duration, 7s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+.dark .data-particle {
+  background: radial-gradient(circle, rgba(240, 175, 95, 0.9) 0%, rgba(200, 110, 60, 0.45) 60%, transparent 100%);
+  box-shadow: 0 0 14px rgba(240, 175, 95, 0.5);
+}
+
+@keyframes particle-breathe {
+  0% {
+    transform: scale(0.85) translate(0, 0);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.2) translate(4px, -12px);
+    opacity: 0.8;
+  }
+}
+
+/* ====================================================================
+   Footer Botanical Leaf & Reed Bed
+   ==================================================================== */
+.footer-bed {
+  width: 100%;
+  height: 160px;
+  position: relative;
+  overflow: visible;
+  pointer-events: none;
+  margin-bottom: -40px;
+}
+
+.bed-item {
+  width: var(--size, 90px);
+  aspect-ratio: 1;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s), opacity 0.6s ease-out var(--delay, 0s);
+}
+
+.bed-item.visible {
+  opacity: 0.92;
+  transform: translate(-50%, -50%);
+}
+
+.bed-sway {
+  width: 100%;
+  height: 100%;
+  animation: bed-sway 11s ease-in-out var(--sway-delay, 0s) infinite alternate;
+  transform-origin: 50% 100%;
+}
+
+@keyframes bed-sway {
+  0% { transform: rotate(-3deg); }
+  100% { transform: rotate(3deg) translateY(-4px); }
+}
+
+/* ====================================================================
+   Navigation
+   ==================================================================== */
+.blur-top {
+  z-index: 40;
+  width: 100%;
+  height: 144px;
+  pointer-events: none;
+  user-select: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.blur-backdrop {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  mask-image: linear-gradient(#000 42%, transparent 100%);
+  -webkit-mask-image: linear-gradient(#000 42%, transparent 100%);
+}
+
+.blur-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--page-bg), transparent);
+}
+
+.nav {
+  z-index: 50;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 640px;
+  padding: 0 24px;
+  padding-block: 32px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.nav-logo {
+  color: var(--gray-11);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo-text {
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-1);
+  background: var(--gray-12);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.nav-logo:hover {
+  color: var(--gray-12);
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  list-style: none;
+}
+
+.nav-link {
+  color: var(--gray-11);
+  font-size: 14px;
+  letter-spacing: -0.087px;
+  line-height: 24px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  transition: color 0.2s, background-color 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.nav-link:hover {
+  color: var(--gray-12);
+}
+
+.sound-toggle,
+.theme-toggle {
+  width: 32px;
+  height: 32px;
+  color: var(--gray-11);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: color 0.2s, background-color 0.2s, transform 0.15s;
+  margin-left: 2px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sound-toggle:hover,
+.theme-toggle:hover {
+  color: var(--gray-12);
+  background: var(--gray-a3);
+}
+
+.sound-toggle:active,
+.theme-toggle:active {
+  transform: scale(0.92);
+}
+
+/* Keyboard focus (nav) */
+.nav-logo:focus-visible,
+.nav-link:focus-visible,
+.sound-toggle:focus-visible,
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--autumn-amber);
+  outline-offset: 2px;
+  color: var(--gray-12);
+}
+
+.nav-logo:focus-visible {
+  border-radius: 8px;
+}
+
+/* Keep the hidden nav out of the tab order during the intro */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-preloader="running"] .nav {
+    visibility: hidden;
+  }
+}
+
+.light .icon-moon { display: none; }
+.dark .icon-sun { display: none; }
+
+html[data-sound="muted"] .icon-sound-on { display: none; }
+html:not([data-sound="muted"]) .icon-sound-off { display: none; }
+
+/* ====================================================================
+   Main Page Layout
+   ==================================================================== */
+#main-content {
+  min-height: 100svh;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  z-index: 10;
+}
+
+.page {
+  width: 100%;
+  max-width: 640px;
+  padding: 0 24px;
+  margin: 0 auto;
+  min-height: 100svh;
+}
+
+/* ====================================================================
+   Hero / Intro Section & Handwritten Signature Animation
+   ==================================================================== */
+.intro {
+  padding-top: 140px;
+  padding-bottom: 48px;
+}
+
+.name-container {
+  margin-bottom: 32px;
+  display: block;
+}
+
+.signature {
+  width: 220px;
+  height: 48px;
+  display: block;
+  color: var(--gray-12);
+  overflow: visible;
+}
+
+.signature-glyph {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 0;
+  transition: stroke 0.2s;
+}
+
+/* Real-text name + role (indexable H1 content under the signature) */
+.hero-name {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.087px;
+  color: var(--gray-12);
+}
+
+.hero-role {
+  color: var(--gray-10);
+  font-weight: 450;
+}
+
+html[data-preloader="running"] .hero-name {
+  opacity: 0;
+  animation: hero-name-in 0.6s ease-out 1.6s forwards;
+}
+
+@keyframes hero-name-in {
+  to { opacity: 1; }
+}
+
+/* While preloader is running, the signature writes itself out */
+html[data-preloader="running"] .signature-glyph {
+  stroke-dashoffset: 300;
+  animation: signature-draw var(--duration, 0.35s) cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s) forwards;
+}
+
+@keyframes signature-draw {
+  0% {
+    stroke-dashoffset: 300;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.greeting {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.403px;
+  color: var(--gray-12);
+  margin-bottom: 24px;
+  line-height: 1.4;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.greeting-emoji {
+  display: inline-block;
+  animation: wave 2.5s ease-in-out infinite;
+  transform-origin: 70% 70%;
+}
+
+@keyframes wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+}
+
+.copy {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.175px;
+  line-height: 28px;
+  color: var(--gray-11);
+  margin-bottom: 20px;
+  text-wrap: pretty;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.copy:last-of-type {
+  margin-bottom: 0;
+}
+
+.emphasis {
+  color: var(--gray-12);
+  font-weight: 500;
+}
+
+.handwritten {
+  font-family: "Caveat", cursive;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--autumn-amber);
+  letter-spacing: 0;
+}
+
+.intro-link {
+  color: var(--gray-12);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--link-underline);
+  text-underline-offset: 3px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.intro-link:hover {
+  text-decoration-color: var(--gray-12);
+}
+
+.brand-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--gray-12);
+  vertical-align: baseline;
+}
+
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--gray-12);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--link-underline);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+
+.brand-link:hover {
+  text-decoration-color: var(--gray-12);
+}
+
+.brand-mark {
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: #0072c6;
+  border-radius: 5px;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.brand-name {
+  font-weight: 500;
+}
+
+/* ====================================================================
+   Preloader / Progressive Streaming State
+   ==================================================================== */
+html[data-preloader="running"] [data-intro-line] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+html[data-preloader="running"] [data-intro-line].intro-line-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+html[data-preloader="running"] .nav,
+html[data-preloader="running"] .work-section,
+html[data-preloader="running"] .timeline-section,
+html[data-preloader="running"] .footer {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+}
+
+html[data-preloader="done"] .nav,
+html[data-preloader="done"] .work-section,
+html[data-preloader="done"] .timeline-section,
+html[data-preloader="done"] .footer {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-preloader="done"] [data-intro-line] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ====================================================================
+   Floating Intro Controls Pill
+   ==================================================================== */
+.intro-controls {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  padding: 3px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Hide the pill once the reader scrolls down (shown again at the top) */
+.intro-controls.is-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s, transform 0.3s, visibility 0s 0.3s;
+}
+
+.dark .intro-controls {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.intro-control-btn {
+  height: 30px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, transform 0.15s;
+}
+
+.intro-control-btn:hover {
+  background: var(--gray-a3);
+}
+
+.intro-control-btn:active {
+  transform: scale(0.96);
+}
+
+.intro-control-icon {
+  font-size: 13px;
+}
+
+/* ====================================================================
+   Work / Projects Section
+   ==================================================================== */
+.work-section {
+  padding-top: 16px;
+  padding-bottom: 48px;
+}
+
+.work-section .section-header {
+  margin-bottom: 12px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.132px;
+  color: var(--gray-12);
+}
+
+.section-link {
+  font-size: 14px;
+  color: var(--gray-10);
+  letter-spacing: -0.087px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--link-underline);
+  text-underline-offset: 3px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.section-link:hover {
+  color: var(--gray-12);
+  text-decoration-color: var(--gray-12);
+}
+
+/* ====================================================================
+   Timeline Section
+   ==================================================================== */
+.timeline-section {
+  padding-top: 16px;
+  padding-bottom: 80px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-group {
+  position: relative;
+  padding-left: 24px;
+  padding-bottom: 32px;
+}
+
+.timeline-group::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 8px;
+  bottom: 0;
+  width: 1px;
+  background: var(--gray-a5);
+}
+
+.timeline-group:last-child::before {
+  display: none;
+}
+
+.timeline-year {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.041px;
+  color: var(--gray-12);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.timeline-year::before {
+  content: "";
+  position: absolute;
+  left: -24px;
+  top: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gray-12);
+}
+
+.timeline-list {
+  list-style: none;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 12px;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -0.087px;
+}
+
+.timeline-date {
+  color: var(--gray-9);
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: -0.041px;
+  min-width: 68px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.timeline-text {
+  color: var(--gray-11);
+}
+
+/* ====================================================================
+   Footer
+   ==================================================================== */
+.footer {
+  z-index: 10;
+  width: 100%;
+  position: relative;
+}
+
+.footer-inner {
+  width: 100%;
+  max-width: 640px;
+  padding: 0 24px 48px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-divider {
+  width: 100%;
+  height: 9px;
+  display: block;
+  overflow: visible;
+}
+
+.footer-divider path {
+  fill: none;
+  stroke: var(--gray-a6);
+  stroke-width: 1.1px;
+  stroke-linecap: round;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-logo {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-9);
+  letter-spacing: -0.041px;
+}
+
+.footer-email {
+  font-size: 14px;
+  color: var(--gray-10);
+  letter-spacing: -0.087px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--gray-a6);
+  text-underline-offset: 3px;
+  line-height: 24px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.footer-email:hover {
+  color: var(--gray-12);
+  text-decoration-color: var(--gray-9);
+}
+
+.footer-bottom {
+  padding-bottom: 8px;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: var(--gray-9);
+  letter-spacing: -0.041px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--gray-10);
+  letter-spacing: -0.041px;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--gray-12);
+}
+
+/* ====================================================================
+   Responsive
+   ==================================================================== */
+@media (max-width: 640px) {
+  .nav-container {
+    padding-inline: 16px;
+    padding-block: 18px;
+  }
+
+  .nav-list {
+    gap: 0;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    padding: 2px 5px;
+  }
+
+  .sound-toggle,
+  .theme-toggle {
+    width: 28px;
+    height: 28px;
+    margin-left: 1px;
+  }
+
+  .intro {
+    padding-top: 96px;
+  }
+
+  .signature {
+    width: 180px;
+    height: 40px;
+  }
+
+  .greeting {
+    font-size: 20px;
+  }
+
+  .copy {
+    font-size: 15px;
+    line-height: 26px;
+  }
+
+  .timeline-item {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .intro-controls {
+    bottom: 16px;
+  }
+}
+
+@media (max-width: 440px) {
+  .work-link {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-container {
+    padding-inline: 10px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    padding: 2px 4px;
+  }
+}
+
+@media (max-width: 360px) {
+  .nav-link {
+    padding: 2px 3px;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .greeting-emoji,
+  .autumn-aura-primary,
+  .autumn-aura-secondary,
+  .bloom-sway,
+  .bed-sway,
+  .data-particle {
+    animation: none !important;
+  }
+
+  .signature-glyph {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
+
+  html[data-preloader="running"] [data-intro-line],
+  html[data-preloader="running"] .nav,
+  html[data-preloader="running"] .work-section,
+  html[data-preloader="running"] .timeline-section,
+  html[data-preloader="running"] .footer {
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
 }
